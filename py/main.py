@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Union
 
 from  Ashare import *
 
 class Params(BaseModel):
     frequency: str
     count: int
-    end_date: str | None = None
+    end_date: Union[str, None] = None
 
 app = FastAPI()
 
