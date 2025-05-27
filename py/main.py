@@ -6,7 +6,7 @@ from  Ashare import *
 class Params(BaseModel):
     frequency: str
     count: int
-    end_date: str | None
+    end_date: str | None = None
 
 app = FastAPI()
 
