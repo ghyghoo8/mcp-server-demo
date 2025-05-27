@@ -5,8 +5,14 @@
 python 运行
 
 ```
-开发：uvicorn main:app --reload   
-生产：uvicorn main:app
+
+cd py
+
+// 开发
+uvicorn main:app --reload   
+
+// 生产
+uvicorn main:app
 
 // pip install "uvicorn[standard]"
 // uvicorn main:app --host '0.0.0.0' --port 8800 --reload
