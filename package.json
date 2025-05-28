@@ -1,0 +1,33 @@
+{
+  "name": "mcp-server-demo",
+  "version": "1.0.0",
+  "description": "mcp server ",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghyghoo8/mcp-server-demo.git"
+  },
+  "keywords": [
+    "mcp"
+  ],
+  "author": "ghy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ghyghoo8/mcp-server-demo/issues"
+  },
+  "homepage": "https://github.com/ghyghoo8/mcp-server-demo#readme",
+  "devDependencies": {
+    "@types/node": "^22.15.23",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "marked": "^15.0.12"
+  }
+}
