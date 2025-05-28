@@ -1,8 +1,7 @@
 import { stocks } from "stock-api";
-
+import axios from 'axios';
 
 type StockItem  = Record<string,string>
-
 
 async function getCodes(key: string) {
   try {
@@ -17,7 +16,6 @@ async function getCodes(key: string) {
   }
 }
 
-
 // 获取股票组实时数据
 export async function searchStocks(searchKey: string) {
   try {
@@ -30,3 +28,17 @@ export async function searchStocks(searchKey: string) {
   }
 }
 
+
+const URL = "http://106.55.105.66:8000/query"
+// const URL = "http://127.0.0.1:8000/query"
+
+/**
+ * 获取股票数据
+ * @param code 
+ */
+export async function getStockPrice(code: string, frequency: string, count:number, end_date?:string) {
+  const result = await axios.post(`${URL}/${code}`, {
+    frequency, count, end_date
+  })
+  return result.data
+}

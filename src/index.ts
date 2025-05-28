@@ -1,13 +1,12 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-import { searchStocks } from './utils'
+import { searchStocks, getStockPrice } from './utils'
 
-searchStocks('同花顺').then(code => {
-  console.log('searchStocks===>', code)
-})
+const minSchema = z.enum(['1m', '5m', '15m', '30m', '60m']);
+const daySchema = z.enum(['1d','1w','1M']);
 
 
 // 创建MCP服务器
@@ -16,14 +15,55 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// // // Add an addition tool
-server.tool("get_ticker_price",
-  { 
-    code: z.string(),
-  },
-  async ({ code }) => ({
-    content: [{ type: "text", text: code }]
+
+server.resource(
+  "stock-code",
+  new ResourceTemplate("file:///libs/codeData.json", { list: undefined }),
+  async (uri) => ({
+    contents: [{ uri: uri.href, text: "all stock-code list data", mimeType:'text/json'}],
   })
+)
+
+server.tool("get_stock_code",
+  {
+    name: z.string()
+  },
+  async ({ name }) => {
+    const code = await searchStocks(name) as string
+    return {
+      content: [{ type: "text", text: code }]
+    }
+  }
 );
 
+
+// Add an addition tool
+server.tool("get_stock_price_min",
+  { 
+    code: z.string(),
+    frequency: minSchema,
+    count: z.number().default(10),
+  },
+  async ({ code, frequency, count }) => {
+    const data = await getStockPrice(code, frequency,count )
+    return {
+      content: [{ type: "text", text: data }]
+    }
+  }
+);
+
+server.tool("get_stock_price_day",
+  { 
+    code: z.string(),
+    frequency: daySchema,
+    count: z.number().default(10),
+    end_date: z.optional(z.string())
+  },
+  async ({ code, frequency,count,end_date }) => {
+    const data = await getStockPrice(code, frequency,count,end_date )
+    return {
+      content: [{ type: "text", text: data }]
+    }
+  }
+);
 
