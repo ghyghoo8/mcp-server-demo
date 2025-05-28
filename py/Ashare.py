@@ -10,8 +10,8 @@ def get_price_day_tx(code, end_date='', count=10, frequency='1d'):     #日线�
     st= json.loads(requests.get(URL).content);    ms='qfq'+unit;      stk=st['data'][code]   
     buf=stk[ms] if ms in stk else stk[unit]       #指数返回不是qfqday,是day
     buf = [item[:6] for item in buf] # 去掉第七行cqr数据(例如hk00002)
-    df=pd.DataFrame(buf,columns=['time','open','close','high','low','volume'],dtype='float')     
-    df.time=pd.to_datetime(df.time);    df.set_index(['time'], inplace=True);   df.index.name=''          #处理索引 
+    df=pd.DataFrame(buf,columns=['time','open','close','high','low','volume','date'],dtype='float')     
+    df.time=pd.to_datetime(df.time);  df.date=pd.to_datetime(df.time);    df.set_index(['time'], inplace=True);   df.index.name=''          #处理索引 
     return df
 
 #腾讯分钟线
@@ -21,9 +21,9 @@ def get_price_min_tx(code, end_date=None, count=10, frequency='1d'):    #分钟�
     URL=f'http://ifzq.gtimg.cn/appstock/app/kline/mkline?param={code},m{ts},,{count}' 
     st= json.loads(requests.get(URL).content);       buf=st['data'][code]['m'+str(ts)] 
     df=pd.DataFrame(buf,columns=['time','open','close','high','low','volume','n1','n2'])   
-    df=df[['time','open','close','high','low','volume']]    
+    df=df[['time','open','close','high','low','volume','date']]    
     df[['open','close','high','low','volume']]=df[['open','close','high','low','volume']].astype('float')
-    df.time=pd.to_datetime(df.time);   df.set_index(['time'], inplace=True);   df.index.name=''          #处理索引     
+    df.time=pd.to_datetime(df.time); df.date=pd.to_datetime(df.time);   df.set_index(['time'], inplace=True);   df.index.name=''          #处理索引     
     df['close'][-1]=float(st['data'][code]['qt'][code][3])                #最新基金数据是3位的
     return df
 
