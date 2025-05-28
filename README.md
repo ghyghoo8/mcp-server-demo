@@ -23,3 +23,4 @@ uvicorn main:app
 ### 资料
 * demo1：https://github.com/MCP-100/stock-market-server/blob/main/src/index.ts
 * AShare：https://github.com/mpquant/Ashare
+* hello world： https://www.5ee.net/archives/tmXJAgWz
