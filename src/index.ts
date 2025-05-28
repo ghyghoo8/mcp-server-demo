@@ -67,3 +67,14 @@ server.tool("get_stock_price_day",
   }
 );
 
+const transport = new StdioServerTransport();
+server.connect(transport).then((v) => {
+  console.log('MCP Server running===>')
+});
+
+// 关闭则退出
+process.on('SIGINT', async () => {
+  await server.close();
+  console.log('MCP Server closed')
+  process.exit(0);
+});
