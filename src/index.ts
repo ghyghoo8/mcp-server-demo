@@ -20,7 +20,7 @@ server.resource(
   "stock-code",
   new ResourceTemplate("file:///libs/codeData.json", { list: undefined }),
   async (uri) => ({
-    contents: [{ uri: uri.href, text: "all stock-code list data", mimeType:'text/json'}],
+    contents: [{ uri: uri.href, text: "all stock-code list data", mimeType:'application/json'}],
   })
 )
 
