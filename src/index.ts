@@ -19,6 +19,10 @@ const server = new McpServer({
 server.resource(
   "stock-code",
   new ResourceTemplate("file:///libs/codeData.json", { list: undefined }),
+  {
+    description: "Provide a copy of all the stock codes of the a-shares.",
+    mimeType: "application/json"
+  },
   async (uri) => ({
     contents: [{ uri: uri.href, text: "all stock-code list data", mimeType:'application/json'}],
   })
@@ -27,6 +31,9 @@ server.resource(
 server.tool("get_stock_code",
   {
     name: z.string()
+  },
+  {
+    description: "Based on the stock name you enter, to get the specific stock code."
   },
   async ({ name }) => {
     const code = await searchStocks(name) as string
@@ -44,6 +51,9 @@ server.tool("get_stock_price_min",
     frequency: minSchema,
     count: z.number().default(10),
   },
+  {
+    description: "Provides minute-by-minute K-line data for the day based on the entered stock code."
+  },
   async ({ code, frequency, count }) => {
     const data = await getStockPrice(code, frequency,count )
     return {
@@ -58,6 +68,9 @@ server.tool("get_stock_price_day",
     frequency: daySchema,
     count: z.number().default(10),
     end_date: z.optional(z.string())
+  },
+  {
+    description: "Provides historical daily level K-line data based on the entered ticker symbol."
   },
   async ({ code, frequency,count,end_date }) => {
     const data = await getStockPrice(code, frequency,count,end_date )
