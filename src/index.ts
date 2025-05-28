@@ -33,7 +33,7 @@ server.tool("get_stock_code",
     name: z.string()
   },
   {
-    description: "Provide matching stock codes based on the keywords you enter."
+    description: "Provide a stock code that matches the keyword you entered."
   },
   async ({ name }) => {
     const code = await searchStocks(name) as string
