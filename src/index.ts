@@ -8,13 +8,11 @@ import { searchStocks, getStockPrice } from './utils'
 const minSchema = z.enum(['1m', '5m', '15m', '30m', '60m']);
 const daySchema = z.enum(['1d','1w','1M']);
 
-
 // 创建MCP服务器
 const server = new McpServer({
   name: "ashare-query",
   version: "1.0.0"
 });
-
 
 server.resource(
   "stock-code",
