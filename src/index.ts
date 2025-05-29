@@ -81,7 +81,8 @@ server.tool("get_stock_price_day",
 );
 
 const transport = new StdioServerTransport();
-server.connect(transport).then((v) => {
+// 默认端口8000
+server.connect(transport).then(() => {
   console.log('MCP Server running===>')
 });
 
